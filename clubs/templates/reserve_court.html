@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block subheader_title %}
+    <h5>Reserve a Court</h5>
+{% endblock %}
+
+{% block content %}
+    <div class="kt-portlet kt-portlet--mobile">
+        <div class="kt-portlet__body">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {% crispy form form.helper %}
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        $('#id_date').datepicker({
+            format: 'yyyy-mm-dd',
+            todayHighlight: 'TRUE',
+            autoclose: true,
+        });
+    </script>
+{% endblock %}

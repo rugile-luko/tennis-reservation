@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block subheader_title %}
+    <h5>My Reservations</h5>
+{% endblock %}
+{% block content %}
+    {% if messages %}
+        <div class="kt-section">
+            {% for message in messages %}
+                <div class="kt-section__content">
+                    {#                <div class="alert alert-solid-success alert-bold" role="alert">#}
+                    {#                    <div class="alert-text">{{ message }}</div>#}
+                    {#                </div>#}
+                    <div class="alert alert-solid-danger alert-bold" role="alert">
+                        <div class="alert-text">{{ message }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="kt-portlet kt-portlet--mobile">
+        <div class="kt-portlet__body">
+            <div class="kt-section">
+                <td class="kt-section__content">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Reservation Date</th>
+                            <th class="text-center">Tennis Club</th>
+                            <th class="text-center">Court</th>
+                            <th class="text-center">Time</th>
+                            <th class="text-center">Reservation Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for reservation in reservations %}
+                            <tr>
+                                <td>{{ reservation.date|date:"Y-m-d" }}</td>
+                                <td class="text-center">{{ reservation.court.club }}</td>
+                                <td class="text-center">{{ reservation.court }}</td>
+                                <td class="text-center">{{ reservation.starting_hour }} h</td>
+                                {% if reservation.cancelled == True %}
+                                    <td class="text-center">
+                                        <span class="kt-badge kt-badge--danger kt-badge--inline">Cancelled</span>
+                                    </td>
+                                {% elif reservation.starting_hour > time and date == reservation.date or date < reservation.date %}
+                                    <td class="text-center">
+                                        <a href="{% url 'cancel_reservation' reservation_pk=reservation.pk %}">
+                                            <span class="kt-badge kt-badge--success kt-badge--inline">Cancel</span></a>
+                                    </td>
+                                {% elif date > reservation.date or reservation.starting_hour < time %}
+                                    <td class="text-center">
+                                        <span class="kt-badge kt-badge--dark kt-badge--inline">Past Reservation</span>
+                                    </td>
+                                {% else %}
+                                    <td class="text-center">
+                                        <span class="kt-badge kt-badge--warning kt-badge--inline">Unable to Cancel</span>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

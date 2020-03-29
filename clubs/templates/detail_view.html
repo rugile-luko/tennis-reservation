@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    <link href="{% static "detail_view.css" %}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block subheader_title %}
+    <h5 class="text-muted">Tennis Club: </h5> &nbsp;
+    <h5> {{ club.name }}</h5>
+{% endblock %}
+
+{% block subheader_button %}
+    {% if date < today %}
+        <a class="btn btn-secondary" href="{% url 'home' %}" role="button">Home</a>
+    {% else %}
+        <a class="btn btn-primary" href="{% url 'create_court' club.pk date %}" role="button">Create a Court</a>
+        <a class="btn btn-secondary" href="{% url 'home' %}" role="button">Back</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <!--begin::Section-->
+    {% if messages %}
+        <div class="kt-section">
+        {% for message in messages %}
+            <div class="kt-section__content">
+                <div class="alert alert-solid-success alert-bold" role="alert">
+                    <div class="alert-text">{{ message }}</div>
+                </div>
+                {#                <div class="alert alert-solid-danger alert-bold" role="alert">#}
+                {#                    <div class="alert-text">A simple danger alert—check it out!</div>#}
+                {#                </div>#}
+            </div>
+        {% endfor %}
+    {% endif %}
+<!--end::Section-->
+<div class="kt-portlet">
+    <div class="kt-portlet__body">
+
+        <!--begin::Section-->
+        <div class="kt-section">
+            <div class="kt-section__content">
+                {% if date > today %}
+                    <p>
+                    <a href="{% url 'detail_view' club.pk previous_date %}"><i class="arrow my-arrow left"></i></a>
+                {% endif %}
+                {{ date|date:"Y-m-d" }}
+                <a href="{% url 'detail_view' club.pk next_date %}"><i class="arrow my-arrow right"></i></a></p>
+                <div class="wrapper">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Court</th>
+                        {% for hour in working_hours %}
+                            <th class="text-center">{{ hour }}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for court, court_schedule in courts_with_schedule.items %}
+                        <tr>
+                            <td>
+                                <span>{{ court.name }}</span><br/>
+                                <span class="text-muted">{{ court.type }}</span>
+                            </td>
+                            {% for hour in court_schedule %}
+                                {% if hour.is_unavailable %}
+                                    <th class="unavailable-th"></th>
+                                {% elif hour.is_reserved %}
+                                    <th class="reserved-th"></th>
+                                {% else %}
+                                    <th class="available-th"><a href=
+                                            {% url 'reserve_court' club_pk=club.pk date=date court_pk=court.pk hour=hour.hour %}></a>
+                                    </th>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+
+        <!--end::Section-->
+    </div>
+
+    <!--end::Form-->
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block subheader_title %}
+    <h5>Tennis Clubs</h5>
+{% endblock %}
+{% block subheader_button %}
+    <a class="btn btn-primary" href="{% url 'create_club' %}" role="button">Create a Club</a>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
+                <div class="kt-portlet__body">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="kt_widget11_tab1_content">
+                            <div class="kt-widget11">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <td style="width:40%" class="text-center">Name of the Club</td>
+                                            <td style="width:15%" class="text-center">Number of Grass Courts</td>
+                                            <td style="width:15%" class="text-center">Number of Clay Courts</td>
+                                            <td style="width:15%" class="text-center">Number of Hard Courts</td>
+                                            <td style="width:15%" class="text-center">Number of Carpet Courts</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for club in clubs %}
+                                            <tr>
+                                                <td>
+                                                    <a href="{% url 'detail_view' club.pk date %}" class="kt-widget11__title">{{ club.name }}</a>
+                                                    <span class="kt-widget11__sub">{{ club.address }}</span>
+                                                </td>
+                                                <td class="text-center">{{ club.get_grass_court_count }}</td>
+                                                <td class="text-center">{{ club.get_clay_court_count }}</td>
+                                                <td class="text-center">{{ club.get_hard_court_count }}</td>
+                                                <td class="text-center">{{ club.get_carpet_court_count }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+{#                                <div class="kt-widget11__action kt-align-right">#}
+{#                                </div>#}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
