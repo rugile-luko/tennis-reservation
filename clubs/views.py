@@ -1,6 +1,7 @@
 import datetime
 from datetime import timedelta
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from . import forms
@@ -69,16 +70,13 @@ def reserve_court(request, club_pk, date, court_pk, hour):
     if request.method == 'POST':
         form = forms.ReservationForm(the_club, date, court, hour, request.POST, initial={"date": date})
         if form.is_valid():
-            reserved_court = form.cleaned_data.get("court")
-            starting_hour = form.cleaned_data.get("starting_hour")
-            reservation_date = form.cleaned_data.get("date")
-            email = form.cleaned_data.get("email")
             new_form = form.save(commit=False)
             new_form.user = request.user
             new_form.save()
-            comment = "You have reserved a " + str(reserved_court) + " at " +\
-                      str(starting_hour) + "h, " + str(reservation_date)
-            send_mail('subject', comment, [email], [email])
+            comment = "You have reserved a %s at %s h, %s."\
+                      % (form.cleaned_data.get("court"), form.cleaned_data.get("starting_hour"), form.cleaned_data.get("date"))
+
+            send_mail('Reservation Successful!', comment, settings.ADMIN_EMAIL, [form.cleaned_data.get("email")])
             messages.success(request, 'The court reserved successfully!')
             return redirect('detail_view', club_pk=club_pk, date=date)
     else:
@@ -138,7 +136,7 @@ def create_court(request, club_pk, date):
 
 @login_required
 def my_reservations(request):
-    reservations = models.Reservation.objects.all().filter(user=request.user).order_by('-date', 'starting_hour')
+    reservations = models.Reservation.objects.all().filter(user=request.user)
     date = datetime.datetime.now().date()
 
     context = {

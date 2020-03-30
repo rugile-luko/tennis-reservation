@@ -15,14 +15,7 @@ class ReservationForm(forms.ModelForm):
         self.fields['court'].initial = court
         self.fields['starting_hour'].initial = hour
         self.helper = FormHelper()
-        self.helper.form_id = 'id-ReservationForm'
-        # self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_reservation'
         self.helper.add_input(Submit('submit', 'Reserve a Court'))
-        # self.helper.add_input(Button('cancel', 'Cancel', css_class='btn btn-secondary',
-        #                              onClick="window.location.href = '{}';"
-        #                              .format(reverse('detail_view', args=[club.pk, date]))))
 
         club_open_hours = []
         for hour in range(club.from_hour, club.to_hour + 1):
@@ -31,7 +24,6 @@ class ReservationForm(forms.ModelForm):
                     (int(hour), str(hour))
                 )
 
-        # club_open_hours = [(i, i) for i in range(club.from_hour, club.to_hour + 1)]
         self.fields['starting_hour'].choices = club_open_hours
 
     class Meta:
@@ -62,14 +54,9 @@ class ClubForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ClubForm, self).__init__(*args, **kwargs)
         self.fields['address'].widget = TextInput(attrs={
-            # 'id': 'autocompleteAddress',
             'placeholder': 'Enter club address'
             })
         self.helper = FormHelper()
-        self.helper.form_id = 'id-ClubForm'
-        # self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'create_club'
         self.helper.add_input(Submit('submit', 'Create a Club'))
         self.helper.add_input(Button('cancel', 'Cancel', css_class='btn btn-secondary',
                                      onClick="window.location.href='{}';"
@@ -79,25 +66,13 @@ class ClubForm(forms.ModelForm):
         model = models.Club
         fields = '__all__'
 
-        # widgets = {
-        #     'address': forms.CharField(max_length=200, attrs={"id": "autocomplete"})
-        # }
-
 
 class CourtForm(forms.ModelForm):
     def __init__(self, club, *args, **kwargs):
         self.club = club
         super(CourtForm, self).__init__(*args, **kwargs)
-        # self.fields['club'].queryset = models.Club.objects.filter(name=club.name)
         self.helper = FormHelper()
-        self.helper.form_id = 'id-CourtForm'
-        # self.helper.form_class = 'blueForm'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'create_court'
         self.helper.add_input(Submit('submit', 'Save'))
-        # self.helper.add_input(Button('cancel', 'Cancel', css_class='btn btn-secondary',
-        #                              onClick="window.location.href='{}';"
-        #                              .format(reverse('detail_view', args=[club.pk]))))
 
     class Meta:
         model = models.Court

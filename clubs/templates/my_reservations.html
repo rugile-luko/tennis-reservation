@@ -3,20 +3,6 @@
     <h5>My Reservations</h5>
 {% endblock %}
 {% block content %}
-    {% if messages %}
-        <div class="kt-section">
-            {% for message in messages %}
-                <div class="kt-section__content">
-                    {#                <div class="alert alert-solid-success alert-bold" role="alert">#}
-                    {#                    <div class="alert-text">{{ message }}</div>#}
-                    {#                </div>#}
-                    <div class="alert alert-solid-danger alert-bold" role="alert">
-                        <div class="alert-text">{{ message }}</div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
     <div class="kt-portlet kt-portlet--mobile">
         <div class="kt-portlet__body">
             <div class="kt-section">
@@ -62,6 +48,5 @@
                     </table>
             </div>
         </div>
-    </div>
     </div>
 {% endblock %}

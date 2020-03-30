@@ -142,8 +142,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
                         <!--begin: User bar -->
                         <div class="kt-header__topbar-item kt-header__topbar-item--user">
-                                <span class="kt-header__topbar-welcome kt-visible-desktop">Hi,</span>
-                                <span class="kt-header__topbar-username kt-visible-desktop">{{ user }}</span>
+                            <span class="kt-header__topbar-welcome kt-visible-desktop">Hi,</span>
+                            <span class="kt-header__topbar-username kt-visible-desktop">{{ user }}</span>
                             <div class="btn">
                                 <a class="btn btn-danger" href="{% url 'logout' %}" role="button">Logout</a>
                             </div>
@@ -220,36 +220,46 @@ License: You must have a valid license purchased only from themeforest(the above
                     <!--Begin::Section-->
                     <div class="row">
                         <div class="col-md-12">
+                            {% if messages %}
+                                <div class="kt-section">
+                                {% for message in messages %}
+                                    <div class="kt-section__content">
+                                        <div class="alert alert-solid-{% if message.tags == 'error' %}danger{% else %}success{% endif %} alert-bold" role="alert">
+                                            <div class="alert-text">{{ message }}</div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
                             {% block content %}
                             {% endblock %}
+                            </div>
                         </div>
+                        <!--End::Section-->
+                        <!--End::Dashboard 4-->
                     </div>
-                    <!--End::Section-->
-                    <!--End::Dashboard 4-->
+                    <!-- end:: Content -->
                 </div>
-                <!-- end:: Content -->
             </div>
-        </div>
 
-        {#					<!-- begin:: Footer -->#}
-        {#					<div class="kt-footer kt-grid__item" id="kt_footer">#}
-        {#						<div class="kt-container">#}
-        {#							<div class="kt-footer__wrapper">#}
-        {#								<div class="kt-footer__copyright">#}
-        {#									2019&nbsp;&copy;&nbsp;<a href="http://keenthemes.com/metronic" target="_blank" class="kt-link">Keenthemes</a>#}
-        {#								</div>#}
-        {#								<div class="kt-footer__menu">#}
-        {#									<a href="http://keenthemes.com/metronic" target="_blank" class="kt-link">About</a>#}
-        {#									<a href="http://keenthemes.com/metronic" target="_blank" class="kt-link">Team</a>#}
-        {#									<a href="http://keenthemes.com/metronic" target="_blank" class="kt-link">Contact</a>#}
-        {#								</div>#}
-        {#							</div>#}
-        {#						</div>#}
-        {#					</div>#}
-        {##}
-        {#					<!-- end:: Footer -->#}
+            {#					<!-- begin:: Footer -->#}
+            {#					<div class="kt-footer kt-grid__item" id="kt_footer">#}
+            {#						<div class="kt-container">#}
+            {#							<div class="kt-footer__wrapper">#}
+            {#								<div class="kt-footer__copyright">#}
+            {#									2019&nbsp;&copy;&nbsp;<a href="http://keenthemes.com/metronic" target="_blank" class="kt-link">Keenthemes</a>#}
+            {#								</div>#}
+            {#								<div class="kt-footer__menu">#}
+            {#									<a href="http://keenthemes.com/metronic" target="_blank" class="kt-link">About</a>#}
+            {#									<a href="http://keenthemes.com/metronic" target="_blank" class="kt-link">Team</a>#}
+            {#									<a href="http://keenthemes.com/metronic" target="_blank" class="kt-link">Contact</a>#}
+            {#								</div>#}
+            {#							</div>#}
+            {#						</div>#}
+            {#					</div>#}
+            {##}
+            {#					<!-- end:: Footer -->#}
+        </div>
     </div>
-</div>
 </div>
 
 <!--begin:: Global Mandatory Vendors -->

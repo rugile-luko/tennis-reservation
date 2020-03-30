@@ -4,18 +4,26 @@ from django.db import models
 
 HOURS_OF_THE_DAY = [(i, i) for i in range(1, 25)]
 
-DAY_CHOICES = (
-    ('Mon', 'Monday'),
-    ('Tue', 'Tuesday'),
-    ('Wed', 'Wednesday'),
-    ('Thu', 'Thursday'),
-    ('Fri', 'Friday'),
-    ('Sat', 'Saturday'),
-    ('Sun', 'Sunday')
-)
-
 
 class Club(models.Model):
+    MON = "Monday"
+    TUE = "Tuesday"
+    WED = "Wednesday"
+    THU = "Thursday"
+    FRI = "Friday"
+    SAT = "Saturday"
+    SUN = "Sunday"
+
+    DAY_CHOICES = (
+        (MON, 'Monday'),
+        (TUE, 'Tuesday'),
+        (WED, 'Wednesday'),
+        (THU, 'Thursday'),
+        (FRI, 'Friday'),
+        (SAT, 'Saturday'),
+        (SUN, 'Sunday')
+    )
+
     name = models.CharField(max_length=200)
     address = models.CharField(max_length=200, null=True, blank=True)
     weekday_from = models.CharField(choices=DAY_CHOICES, max_length=100)
@@ -27,24 +35,29 @@ class Club(models.Model):
         return self.name
 
     def get_hard_court_count(self):
-        return Court.objects.filter(club=self, type='Hard').count()
+        return Court.objects.filter(club=self, type=Court.HARD).count()
 
     def get_grass_court_count(self):
-        return Court.objects.filter(club=self, type='Grass').count()
+        return Court.objects.filter(club=self, type=Court.GRASS).count()
 
     def get_clay_court_count(self):
-        return Court.objects.filter(club=self, type='Clay').count()
+        return Court.objects.filter(club=self, type=Court.CLAY).count()
 
     def get_carpet_court_count(self):
-        return Court.objects.filter(club=self, type='Carpet').count()
+        return Court.objects.filter(club=self, type=Court.CARPET).count()
 
 
 class Court(models.Model):
+    HARD = "Hard"
+    GRASS = "Grass"
+    CLAY = "Clay"
+    CARPET = "Carpet"
+
     TYPE_OF_SURFACE = (
-        ('Hard', 'Hard'),
-        ('Grass', 'Grass'),
-        ('Clay', 'Clay'),
-        ('Carpet', 'Carpet')
+        (HARD, 'Hard'),
+        (GRASS, 'Grass'),
+        (CLAY, 'Clay'),
+        (CARPET, 'Carpet')
     )
 
     club = models.ForeignKey(Club, related_name='court', on_delete=models.CASCADE)
@@ -58,19 +71,13 @@ class Court(models.Model):
         reservations = Reservation.objects.filter(court=self, starting_hour=hour, date=date)
         if reservations.count() > 0:
             reservation = reservations.first()
-            if reservation.cancelled == True:
-                return False
-            else:
-                return True
+            return not reservation.cancelled
         else:
             return False
 
     def is_unavailable(self, hour, date):
         new_datetime = datetime.datetime(year=date.year, month=date.month, day=date.day, hour=hour, minute=0, second=0)
-        if datetime.datetime.now() > new_datetime:
-            return True
-        else:
-            return False
+        return datetime.datetime.now() > new_datetime
 
     class Meta:
         ordering = ('type', )
@@ -83,3 +90,6 @@ class Reservation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     email = models.EmailField(max_length=100)
     cancelled = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ("-date", "starting_hour", )

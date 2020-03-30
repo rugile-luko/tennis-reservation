@@ -6,10 +6,7 @@
 {% block content %}
     <div class="kt-portlet kt-portlet--mobile">
         <div class="kt-portlet__body">
-            <form method="post" novalidate>
-                {% csrf_token %}
-                {% crispy form form.helper %}
-            </form>
+                {% crispy form %}
         </div>
     </div>
 {% endblock %}
