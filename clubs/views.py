@@ -1,5 +1,7 @@
 import datetime
 from datetime import timedelta
+
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from . import forms
 from django.contrib import messages
@@ -8,6 +10,7 @@ from django.core.mail import send_mail
 from . import models
 
 
+@login_required
 def home(request):
     context = {
         "clubs": models.Club.objects.all(),
@@ -17,6 +20,7 @@ def home(request):
     return render(request, 'home.html', context)
 
 
+@login_required
 def detail_view(request, club_pk, date):
     date = datetime.datetime.strptime(date, '%Y-%m-%d').date()
     today = datetime.datetime.now().date()
@@ -57,6 +61,7 @@ def detail_view(request, club_pk, date):
     return render(request, 'detail_view.html', context)
 
 
+@login_required
 def reserve_court(request, club_pk, date, court_pk, hour):
     date = datetime.datetime.strptime(date, '%Y-%m-%d').date()
     court = models.Court.objects.get(pk=court_pk)
@@ -89,6 +94,7 @@ def reserve_court(request, club_pk, date, court_pk, hour):
     return render(request, 'reserve_court.html', context)
 
 
+@login_required
 def create_club(request):
     if request.method == 'POST':
         form = forms.ClubForm(request.POST)
@@ -106,6 +112,7 @@ def create_club(request):
     return render(request, 'create_club.html', context)
 
 
+@login_required
 def create_court(request, club_pk, date):
     date = datetime.datetime.strptime(date, '%Y-%m-%d').date()
     the_club = get_object_or_404(models.Club, pk=club_pk)
@@ -129,6 +136,7 @@ def create_court(request, club_pk, date):
     return render(request, 'create_court.html', context)
 
 
+@login_required
 def my_reservations(request):
     reservations = models.Reservation.objects.all().filter(user=request.user).order_by('-date', 'starting_hour')
     date = datetime.datetime.now().date()
@@ -142,6 +150,7 @@ def my_reservations(request):
     return render(request, 'my_reservations.html', context)
 
 
+@login_required
 def cancel_reservation(request, reservation_pk):
     reservation = models.Reservation.objects.get(pk=reservation_pk)
     reservation.cancelled = True

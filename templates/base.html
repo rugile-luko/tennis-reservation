@@ -24,7 +24,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <!--end::Base Path -->
     <meta charset="utf-8"/>
-    <title>Metronic | Dashboard</title>
+    <title>Tennis | Reservation</title>
     <meta name="description" content="Latest updates and statistic charts">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -142,15 +142,15 @@ License: You must have a valid license purchased only from themeforest(the above
 
                         <!--begin: User bar -->
                         <div class="kt-header__topbar-item kt-header__topbar-item--user">
-                            <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
                                 <span class="kt-header__topbar-welcome kt-visible-desktop">Hi,</span>
                                 <span class="kt-header__topbar-username kt-visible-desktop">{{ user }}</span>
-                                <span class="kt-header__topbar-icon kt-header__topbar-icon--danger"><b>S</b></span></div>
+                            <div class="btn">
+                                <a href="{% url "logout" %}" type="button" class="btn btn-danger">Logout</a>
+                            </div>
                         </div>
-
                         <!--end: User bar -->
-                    </div>
 
+                    </div>
                     <!-- end:: Header Topbar -->
                 </div>
                 <!-- end:: Header Topbar -->
@@ -219,7 +219,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                     <!--Begin::Section-->
                     <div class="row">
-                        <div class="col-xl-4">
+                        <div class="col-md-12">
                             {% block content %}
                             {% endblock %}
                         </div>
