@@ -28,6 +28,9 @@ And then start the server:
 ```
 python manage.py runserver
 ```
+
+## Usage
+
 Login credentials to try the project with existing demo database:
 
 Username: admin  
