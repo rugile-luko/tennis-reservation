@@ -15,7 +15,7 @@
         <a class="btn btn-secondary" href="{% url 'home' %}" role="button">Home</a>
     {% else %}
         <a class="btn btn-primary" href="{% url 'create_court' club.pk date %}" role="button">Create a Court</a>
-        <a class="btn btn-secondary" href="{% url 'home' %}" role="button">Back</a>
+        <a class="btn btn-label-brand" href="{% url 'home' %}" role="button">Back</a>
     {% endif %}
 {% endblock %}
 
