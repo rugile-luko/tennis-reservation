@@ -1,6 +1,6 @@
 .idea/
 *.pyc
 media/
-!assets/media/
+!static/assets/media/
 outputs/
 staticfiles/
